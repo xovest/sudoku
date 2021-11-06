@@ -32,6 +32,45 @@ function startGame() {
 
   //generating board
   generateBoard(board);
+
+  //starting the timer
+  startTimer();
+
+  //setting the theme
+  if (id("theme-1").checked) {
+    qs("body").classList.remove("dark");
+  } else {
+    qs("body").classList.add("dark");
+  }
+
+  //showing number container
+  id("number-container").classList.remove("hidden");
+}
+
+function startTimer() {
+  //setting the remaining based on input
+  if (id("time-1").checked) timeRemaining = 180;
+  else if (id("time-2").checked) timeRemaining = 300;
+  else timeRemaining = 600;
+
+  //setting the timer first sec
+  id("timer").textContent = timeConversion(timeRemaining);
+
+  timer = setInterval(function() {
+    --timeRemaining;
+    if (!timeRemaining) endGame();
+    id("timer").textContent = timeConversion(timeRemaining);
+  }, 1000);
+}
+
+function timeConversion(time) {
+  //converting in mm:ss format
+  let mins = Math.floor(time / 60);
+  if (mins < 10) mins = '0' + mins;
+
+  let secs = time % 60;
+  if (secs < 10) secs = '0' + secs;
+  return mins + ':' + secs; 
 }
 
 function generateBoard(board) {
