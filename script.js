@@ -154,6 +154,8 @@ function updateMove() {
       //clearing the selected vars
       selectedTile = null;
       selectedNum = null;
+
+      if (checkDone()) endGame();
     } else {
       //if number doesn't match
       disableSelect = true;
@@ -177,6 +179,26 @@ function updateMove() {
         selectedNum = null;
       }, 1000);
     }
+  }
+}
+
+function checkDone() {
+  let tiles = qsa(".tile");
+  for (let i = 0; i < tiles.length; ++i) {
+    if (tiles[i].textContent === "") return false;
+  }
+  return true;
+}
+
+function endGame() {
+  disableSelect = true;
+  clearTimeout(timer);
+
+  //saying win or loss
+  if (!lives || !timeRemaining) {
+    id("lives").textContent = "YOU LOST KUSH!";
+  } else {
+    id("lives").textContent = "HELL YA, YO WOn KUSH!";
   }
 }
 
