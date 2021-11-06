@@ -139,6 +139,56 @@ function generateBoard(board) {
   }
 }
 
+function updateMove() {
+  //if tile and number is selected
+  if (selectedTile && selectedNum) {
+    //setting the correct tile
+    selectedTile.textContent = selectedNum.textContent;
+
+    //then if the number matches:
+    if (checkCorrect(selectedTile)) {
+      //deselecting tiles
+      selectedTile.classList.remove("selected");
+      selectedNum.classList.remove("selected");
+
+      //clearing the selected vars
+      selectedTile = null;
+      selectedNum = null;
+    } else {
+      //if number doesn't match
+      disableSelect = true;
+      selectedTile.classList.add("incorrect");
+      setTimeout(function() {
+        //rip lives
+        --lives;
+        if (!lives) {
+          endGame();
+        } else {
+          id("lives").textContent = "Lives Remaining: " + lives;
+          disableSelect = false;
+        }
+        selectedTile.classList.remove("incorrect");
+        selectedTile.classList.remove("selected");
+        selectedNum.classList.remove("selected");
+
+        //clearing the tiles
+        selectedTile.textContent = "";
+        selectedTile = null;
+        selectedNum = null;
+      }, 1000);
+    }
+  }
+}
+
+function checkCorrect(tile) {
+  let solution;
+  if (id("diff-1").checked) solution = easy[1];
+  else if (id("diff-2").checked) solution = medium[1];
+  else solution = hard[1];
+  // if tiles = solution
+  return solution.charAt(tile.id) === tile.textContent;
+}
+
 function clearPrevious() {
   let tiles = qsa(".tile");
 
