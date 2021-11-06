@@ -16,6 +16,28 @@ var timer, timeRemaining, lives, selectedNum, selectedTile, disableSelect;
 window.onload = function() {
   //new game when u ckick the button
   id("start-btn").addEventListener('click', startGame);
+
+  //making the numbers clickable
+  for (let i = 0; i < id("number-container").children.length; ++i) {
+    id("number-container").children[i].addEventListener('click', function() {
+      //checking if selected is disable
+      if (!disableSelect) {
+        //toggle or choose another one
+        if (this.classList.contains("selected")) {
+          this.classList.remove("selected");
+          selectedNum = null;
+        } else {
+          for (let i = 0; i < 9; ++i) { //id("number-container").children.length same as 9
+            id("number-container").children[i].classList.remove("selected");
+          }
+          this.classList.add("selected");
+          selectedNum = this;
+          //updateMove();
+        }
+
+      }
+    });
+  }
 }
 
 function startGame() {
@@ -86,7 +108,21 @@ function generateBoard(board) {
     if (board.charAt(i) != '-') { //blank
       tile.textContent = board.charAt(i);
     } else {
-
+      tile.addEventListener('click', function() {
+        if (!disableSelect) {
+          if (tile.classList.contains("selected")) {
+            tile.classList.remove("selected");
+            selectedTile = null;
+          } else {
+            for (let i = 0; i < 81; ++i) {
+              qsa(".tile")[i].classList.remove("selected");
+            }
+            tile.classList.add("selected");
+            selectedTile = tile;
+            updateMove();
+          }
+        }
+      });
     }
     tile.id = idCount;
     ++idCount;
